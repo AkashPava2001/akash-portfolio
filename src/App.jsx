@@ -8,6 +8,26 @@ import experienceImage from "./Images/Experience.jpg";
 import projectsImage from "./Images/projects.jpg";
 import educationImage from "./Images/education.jpg";
 
+const EXPERIENCE_MILESTONE = new Date(2026, 7, 27);
+
+const getExperienceLabel = () => {
+  const today = new Date();
+  if (today < EXPERIENCE_MILESTONE) {
+    return "4+";
+  }
+
+  const monthsSinceMilestone = Math.max(
+    0,
+    (today.getFullYear() - EXPERIENCE_MILESTONE.getFullYear()) * 12 +
+      today.getMonth() -
+      EXPERIENCE_MILESTONE.getMonth() -
+      (today.getDate() < EXPERIENCE_MILESTONE.getDate() ? 1 : 0)
+  );
+  const milestoneCount = 41 + monthsSinceMilestone;
+
+  return `${Math.floor(milestoneCount / 10)}.${milestoneCount % 10}+`;
+};
+
 const portfolio = {
   name: "Akash Sivakumar",
   role: "Salesforce Developer",
@@ -199,6 +219,7 @@ const Section = React.forwardRef(({ title, children, id, isActive }, ref) => (
 ));
 export default function App() {
   const [activeSection, setActiveSection] = useState("about");
+  const experienceLabel = getExperienceLabel();
   
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
@@ -325,7 +346,7 @@ export default function App() {
               <div className="hero-stats">
                 <div className="hero-stat">
                   <p className="hero-stat-label">Experience</p>
-                  <p className="hero-stat-value">4+ yrs</p>
+                  <p className="hero-stat-value">{experienceLabel} yrs</p>
                 </div>
                 <div className="hero-stat">
                   <p className="hero-stat-label">Certifications</p>
