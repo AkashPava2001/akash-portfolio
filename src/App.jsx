@@ -16,7 +16,7 @@ const portfolio = {
   email: "akash21feb2001@gmail.com",
   linkedin: "https://www.linkedin.com/in/akash-s-00a980166",
   summary:
-    "Salesforce Developer with 3+ years of experience building scalable enterprise applications. Proficient in LWC, Apex, Integrations, CI/CD, and automation. Strong track record of delivering optimized solutions for global clients and collaborating with cross-functional teams for high-quality implementations.",
+    "Salesforce Developer with 4+ years of experience building and customizing scalable applications for global clients. Specializing in Lightning Web Components (LWC), Apex, Triggers, and Salesforce configuration, with experience using Agentforce and Copilot to deliver AI-driven automation, intelligent insights, and better user experiences.",
 
   skills: {
     development: [
@@ -26,10 +26,11 @@ const portfolio = {
       "Triggers",
       "JavaScript"
     ],
-    integrations: ["REST API", "External Integrations"],
+    integrations: ["REST APIs", "External System Integrations"],
     configuration: ["Flows", "Validation Rules", "Approval Processes"],
     devops: ["Bitbucket", "Jenkins CI/CD", "Version Control"],
-    testing: ["Unit Test Classes", "Release Management"]
+    testing: ["Unit Test Classes", "Code Coverage", "Release Management"],
+    ai: ["Agentforce", "Copilot"]
   },
 
   certifications: [
@@ -45,12 +46,12 @@ const portfolio = {
     {
       role: "Associate",
       company: "Cognizant Technology Solutions",
-      period: "Apr 2025 – Current",
+      period: "Apr 2025 – Present",
       details: [
-        "Designed & optimized Salesforce components using LWC, Visualforce, Apex & Triggers.",
-        "Implemented Batch Apex & complex automation flows.",
-        "Managed ALM, DevOps & CI/CD deployments with Bitbucket & Jenkins.",
-        "Created SDD, ADD, Unit Testing documents for delivery quality."
+        "Design and optimize Salesforce components using LWC, Visualforce, Apex, Triggers, and Batch Apex.",
+        "Use Flows and Process Builder to streamline business processes.",
+        "Manage ALM, DevOps, and CI/CD deployments with Bitbucket and Jenkins.",
+        "Prepare SDD, ADD, and unit-testing documents for quality delivery."
       ]
     },
     {
@@ -58,8 +59,8 @@ const portfolio = {
       company: "Cognizant Technology Solutions",
       period: "Sep 2023 – Mar 2025",
       details: [
-        "Built custom Salesforce solutions using Apex Classes, Triggers, LWC & Batch Apex.",
-        "Authored test documentation and delivered scalable business solutions."
+        "Engineered custom Salesforce solutions using Apex Classes, Triggers, LWC, and Batch Apex.",
+        "Authored unit-test documentation and contributed to robust, scalable client implementations."
       ]
     },
     {
@@ -67,8 +68,8 @@ const portfolio = {
       company: "Cognizant Technology Solutions",
       period: "Aug 2022 – Aug 2023",
       details: [
-        "Wrote unit test classes, executed configuration updates.",
-        "Gained real-time experience in Salesforce development & troubleshooting."
+        "Wrote test classes and executed minor configuration updates during initial project phases.",
+        "Built foundations in Salesforce development, issue resolution, and platform customization."
       ]
     }
   ],
@@ -108,6 +109,26 @@ const portfolio = {
         "Built LWC UI for inventory batch processing.",
         "Improved data accuracy by 30% & barcode scanning by 25%.",
         "Achieved 95% test coverage across scenarios."
+      ]
+    },
+    {
+      name: "Sales Call Management – Unified Call Flow",
+      client: "Abbott Laboratories",
+      tech: "LWC, Apex, Aura",
+      highlights: [
+        "Built an account-driven call flow that lets representatives service cross-business-unit accounts from a single login.",
+        "Added a permission-gated rollout while preserving compatibility for legacy users.",
+        "Enhanced routing and controllers for sales calls, orders, disbursements, and direct-ship schedules."
+      ]
+    },
+    {
+      name: "Budget Summary Dashboards",
+      client: "Abbott Laboratories",
+      tech: "LWC, Apex",
+      highlights: [
+        "Built role-based budget summary dashboards for regional, district, territory, and admin users.",
+        "Implemented hierarchical quarterly budget allocation by manager level and category.",
+        "Added real-time validation to prevent orders and schedules from exceeding available budgets."
       ]
     }
   ],
@@ -296,15 +317,15 @@ export default function App() {
               <p className="summary">{portfolio.summary}</p>
 
               <div className="contact-row">
-                <a href={`mailto:${portfolio.email}`}>📧 {portfolio.email}</a>
-                <span>📱 {portfolio.phone}</span>
-                <a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer">🔗 LinkedIn</a>
+                <a href={`mailto:${portfolio.email}`}>Email {portfolio.email}</a>
+                <span>Phone {portfolio.phone}</span>
+                <a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
               </div>
 
               <div className="hero-stats">
                 <div className="hero-stat">
                   <p className="hero-stat-label">Experience</p>
-                  <p className="hero-stat-value">3+ yrs</p>
+                  <p className="hero-stat-value">4+ yrs</p>
                 </div>
                 <div className="hero-stat">
                   <p className="hero-stat-label">Certifications</p>
@@ -365,7 +386,7 @@ export default function App() {
               onClick={handleCertificationClick}
               className="trailblazer-link"
             >
-              🌟 View Full Trailblazer Profile
+              View Full Trailblazer Profile
             </button>
           </div>
         </Section>
@@ -401,6 +422,7 @@ export default function App() {
             {portfolio.projects.map((p, i) => (
               <div key={i} className="project-card">
                 <h3>{p.name}</h3>
+                {p.client && <p className="client">Client: {p.client}</p>}
                 <p className="tech">{p.tech}</p>
                 <ul>
                   {p.highlights.map((h, j) => (
