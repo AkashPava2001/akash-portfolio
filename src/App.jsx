@@ -8,33 +8,38 @@ import experienceImage from "./Images/Experience.jpg";
 import projectsImage from "./Images/projects.jpg";
 import educationImage from "./Images/education.jpg";
 
-const EXPERIENCE_MILESTONE = new Date(2026, 7, 27);
+const CONTENT_API_URL =
+  "https://script.google.com/macros/s/AKfycbzpinAZc-7fWmKaej0yBy-LcZRqN3QxBgvUKH41KWgfEzEhxwzGRgB8BfupuvqiWwCm/exec";
 
-const getExperienceLabel = () => {
+const getExperienceLabel = (milestoneValue = "2026-08-27") => {
+  const [year, month, day] = milestoneValue.split("-").map(Number);
+  const milestone = new Date(year, month - 1, day);
   const today = new Date();
-  if (today < EXPERIENCE_MILESTONE) {
+  if (Number.isNaN(milestone.getTime()) || today < milestone) {
     return "4+";
   }
 
   const monthsSinceMilestone = Math.max(
     0,
-    (today.getFullYear() - EXPERIENCE_MILESTONE.getFullYear()) * 12 +
+    (today.getFullYear() - milestone.getFullYear()) * 12 +
       today.getMonth() -
-      EXPERIENCE_MILESTONE.getMonth() -
-      (today.getDate() < EXPERIENCE_MILESTONE.getDate() ? 1 : 0)
+      milestone.getMonth() -
+      (today.getDate() < milestone.getDate() ? 1 : 0)
   );
   const milestoneCount = 41 + monthsSinceMilestone;
 
   return `${Math.floor(milestoneCount / 10)}.${milestoneCount % 10}+`;
 };
 
-const portfolio = {
+const fallbackPortfolio = {
   name: "Akash Sivakumar",
   role: "Salesforce Developer",
   location: "Chennai, India",
   phone: "+91 9790478504",
   email: "akash21feb2001@gmail.com",
   linkedin: "https://www.linkedin.com/in/akash-s-00a980166",
+  trailblazer: "https://www.salesforce.com/trailblazer/akass54",
+  experience_milestone: "2026-08-27",
   summary:
     "Salesforce Developer with 4+ years of experience building and customizing scalable applications for global clients. Specializing in Lightning Web Components (LWC), Apex, Triggers, and Salesforce configuration, with experience using Agentforce and Copilot to deliver AI-driven automation, intelligent insights, and better user experiences.",
 
@@ -161,6 +166,21 @@ const portfolio = {
   }
 };
 
+const normalizeContent = (content) => ({
+  ...content.profile,
+  skills: content.skills,
+  certifications: content.certifications,
+  experience: content.experience.map(({ detail, ...experience }) => ({
+    ...experience,
+    details: detail ? [detail] : []
+  })),
+  projects: content.projects.map(({ highlight, ...project }) => ({
+    ...project,
+    highlights: highlight ? [highlight] : []
+  })),
+  education: content.education
+});
+
 const Section = React.forwardRef(({ title, children, id, isActive }, ref) => (
   <section id={id} ref={ref} className={`full-section ${isActive ? 'active' : ''}`}>
     <div className="section-content">
@@ -219,7 +239,8 @@ const Section = React.forwardRef(({ title, children, id, isActive }, ref) => (
 ));
 export default function App() {
   const [activeSection, setActiveSection] = useState("about");
-  const experienceLabel = getExperienceLabel();
+  const [portfolio, setPortfolio] = useState(fallbackPortfolio);
+  const experienceLabel = getExperienceLabel(portfolio.experience_milestone);
   
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
@@ -249,8 +270,32 @@ export default function App() {
   };
 
   const handleCertificationClick = () => {
-    window.open('https://www.salesforce.com/trailblazer/akass54', '_blank');
+    window.open(portfolio.trailblazer, '_blank');
   };
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    fetch(`${CONTENT_API_URL}?updated=${Date.now()}`, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load portfolio content");
+        }
+        return response.json();
+      })
+      .then((content) => {
+        if (isCurrent) {
+          setPortfolio(normalizeContent(content));
+        }
+      })
+      .catch(() => {
+        // Keep the built-in content visible if the external content API is unavailable.
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
