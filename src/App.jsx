@@ -11,12 +11,16 @@ import educationImage from "./Images/education.jpg";
 const CONTENT_API_URL =
   "https://script.google.com/macros/s/AKfycbzpinAZc-7fWmKaej0yBy-LcZRqN3QxBgvUKH41KWgfEzEhxwzGRgB8BfupuvqiWwCm/exec";
 
-const getExperienceLabel = (milestoneValue = "2026-08-27") => {
-  const [year, month, day] = milestoneValue.split("-").map(Number);
+const getExperienceLabel = (milestoneValue, baseValue) => {
+  const [year, month, day] = (milestoneValue || "").split("-").map(Number);
   const milestone = new Date(year, month - 1, day);
+  const base = Number(baseValue);
   const today = new Date();
-  if (Number.isNaN(milestone.getTime()) || today < milestone) {
-    return "4+";
+  if (Number.isNaN(milestone.getTime()) || !Number.isFinite(base)) {
+    return "";
+  }
+  if (today < milestone) {
+    return `${base}+`;
   }
 
   const monthsSinceMilestone = Math.max(
@@ -26,144 +30,9 @@ const getExperienceLabel = (milestoneValue = "2026-08-27") => {
       milestone.getMonth() -
       (today.getDate() < milestone.getDate() ? 1 : 0)
   );
-  const milestoneCount = 41 + monthsSinceMilestone;
+  const milestoneCount = base * 10 + 1 + monthsSinceMilestone;
 
   return `${Math.floor(milestoneCount / 10)}.${milestoneCount % 10}+`;
-};
-
-const fallbackPortfolio = {
-  name: "Akash Sivakumar",
-  role: "Salesforce Developer",
-  location: "Chennai, India",
-  phone: "+91 9790478504",
-  email: "akash21feb2001@gmail.com",
-  linkedin: "https://www.linkedin.com/in/akash-s-00a980166",
-  trailblazer: "https://www.salesforce.com/trailblazer/akass54",
-  experience_milestone: "2026-08-27",
-  summary:
-    "Salesforce Developer with 4+ years of experience building and customizing scalable applications for global clients. Specializing in Lightning Web Components (LWC), Apex, Triggers, and Salesforce configuration, with experience using Agentforce and Copilot to deliver AI-driven automation, intelligent insights, and better user experiences.",
-
-  skills: {
-    development: [
-      "Apex",
-      "Lightning Web Components (LWC)",
-      "Visualforce",
-      "Triggers",
-      "JavaScript"
-    ],
-    integrations: ["REST APIs", "External System Integrations"],
-    configuration: ["Flows", "Validation Rules", "Approval Processes"],
-    devops: ["Bitbucket", "Jenkins CI/CD", "Version Control"],
-    testing: ["Unit Test Classes", "Code Coverage", "Release Management"],
-    ai: ["Agentforce", "Copilot"]
-  },
-
-  certifications: [
-    "Salesforce Certified Administrator",
-    "Salesforce Certified App Builder",
-    "Salesforce Certified Platform Developer I",
-    "Salesforce Certified JavaScript Developer I",
-    "Salesforce Certified AI Associate",
-    "Salesforce Certified Agentforce Specialist"
-  ],
-
-  experience: [
-    {
-      role: "Associate",
-      company: "Cognizant Technology Solutions",
-      period: "Apr 2025 – Present",
-      details: [
-        "Design and optimize Salesforce components using LWC, Visualforce, Apex, Triggers, and Batch Apex.",
-        "Use Flows and Process Builder to streamline business processes.",
-        "Manage ALM, DevOps, and CI/CD deployments with Bitbucket and Jenkins.",
-        "Prepare SDD, ADD, and unit-testing documents for quality delivery."
-      ]
-    },
-    {
-      role: "Programmer Analyst",
-      company: "Cognizant Technology Solutions",
-      period: "Sep 2023 – Mar 2025",
-      details: [
-        "Engineered custom Salesforce solutions using Apex Classes, Triggers, LWC, and Batch Apex.",
-        "Authored unit-test documentation and contributed to robust, scalable client implementations."
-      ]
-    },
-    {
-      role: "Programmer Analyst Trainee",
-      company: "Cognizant Technology Solutions",
-      period: "Aug 2022 – Aug 2023",
-      details: [
-        "Wrote test classes and executed minor configuration updates during initial project phases.",
-        "Built foundations in Salesforce development, issue resolution, and platform customization."
-      ]
-    }
-  ],
-
-  projects: [
-    {
-      name: "Case Research Request Enhancement",
-      tech: "LWC, Apex",
-      highlights: [
-        "Enhanced dropdown UI for detailed Sales Rep selection.",
-        "Added Approval Process, Email notifications & dashboard enhancements.",
-        "Designed LWC components & approval workflows."
-      ]
-    },
-    {
-      name: "Custom PDF Generation – Conga Replacement",
-      tech: "Apex, LWC, Visualforce",
-      highlights: [
-        "Replaced Conga with fully custom VF + Apex PDF generator.",
-        "Implemented grouped tables, pagination & field-set-based configuration.",
-        "Reduced dependency & improved performance by 35%."
-      ]
-    },
-    {
-      name: "Account Alignment Enhancement",
-      tech: "Apex, LWC",
-      highlights: [
-        "Developed LWC Quick Action buttons for alignment workflow.",
-        "Built Apex controller with status updates & Batch Apex processes.",
-        "Led CI/CD deployment and release management."
-      ]
-    },
-    {
-      name: "AN Inventory Management",
-      tech: "Apex, LWC",
-      highlights: [
-        "Built LWC UI for inventory batch processing.",
-        "Improved data accuracy by 30% & barcode scanning by 25%.",
-        "Achieved 95% test coverage across scenarios."
-      ]
-    },
-    {
-      name: "Sales Call Management – Unified Call Flow",
-      client: "Abbott Laboratories",
-      tech: "LWC, Apex, Aura",
-      highlights: [
-        "Built an account-driven call flow that lets representatives service cross-business-unit accounts from a single login.",
-        "Added a permission-gated rollout while preserving compatibility for legacy users.",
-        "Enhanced routing and controllers for sales calls, orders, disbursements, and direct-ship schedules."
-      ]
-    },
-    {
-      name: "Budget Summary Dashboards",
-      client: "Abbott Laboratories",
-      tech: "LWC, Apex",
-      highlights: [
-        "Built role-based budget summary dashboards for regional, district, territory, and admin users.",
-        "Implemented hierarchical quarterly budget allocation by manager level and category.",
-        "Added real-time validation to prevent orders and schedules from exceeding available budgets."
-      ]
-    }
-  ],
-
-  education: {
-    degree: "B.Tech – Information Technology",
-    college: "Karpagam College of Engineering, Coimbatore",
-    year: "2018 – 2022",
-    cgpa: "8.3"
-  }
 };
 
 const normalizeContent = (content) => ({
@@ -239,8 +108,13 @@ const Section = React.forwardRef(({ title, children, id, isActive }, ref) => (
 ));
 export default function App() {
   const [activeSection, setActiveSection] = useState("about");
-  const [portfolio, setPortfolio] = useState(fallbackPortfolio);
-  const experienceLabel = getExperienceLabel(portfolio.experience_milestone);
+  const [portfolio, setPortfolio] = useState(null);
+  const experienceLabel = portfolio
+    ? getExperienceLabel(
+        portfolio.experience_milestone,
+        portfolio.experience_base
+      )
+    : "";
   
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
@@ -276,6 +150,12 @@ export default function App() {
   useEffect(() => {
     let isCurrent = true;
 
+    if (!CONTENT_API_URL) {
+      return () => {
+        isCurrent = false;
+      };
+    }
+
     fetch(`${CONTENT_API_URL}?updated=${Date.now()}`, { cache: "no-store" })
       .then((response) => {
         if (!response.ok) {
@@ -288,9 +168,7 @@ export default function App() {
           setPortfolio(normalizeContent(content));
         }
       })
-      .catch(() => {
-        // Keep the built-in content visible if the external content API is unavailable.
-      });
+      .catch(() => {});
 
     return () => {
       isCurrent = false;
@@ -319,6 +197,10 @@ export default function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (!portfolio) {
+    return null;
+  }
 
   return (
     <div className="portfolio-app">
